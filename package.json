@@ -1,0 +1,19 @@
+{
+  "name": "teste_api",
+  "version": "1.0.0",
+  "description": "Teste para aplicação de vaga na Zero Treze Innovation Space",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Lara Iasmine Pedroso Fabiano",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mysql2": "^2.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12"
+  }
+}
