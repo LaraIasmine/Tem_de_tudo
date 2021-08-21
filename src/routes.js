@@ -50,7 +50,7 @@ router.get('/lucro', (req, res) => {
 //Melhores vendedores (é o vendedor que vendeu maior valor) - não há alteração de dados
 router.get('/topVendedor', (req, res) => {
     connection.query(
-        '',
+        'SELECT vendedores.nome, COUNT(*) as total_vendas FROM `lojatemdetudo`.vendas inner join `lojatemdetudo`.vendedores on vendedores.id = vendas.fk_vendedor GROUP BY vendedores.id ORDER BY total_vendas DESC LIMIT 1',
         (err, rows, fields) => {
             if(err) throw err;
             res.status(200).json(rows)
