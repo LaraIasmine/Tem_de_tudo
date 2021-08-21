@@ -26,7 +26,7 @@ router.get('/teste', (req, res) => {
 //Vendas semanais (somatoria de todas as vendas da semana)- não há alteração de dados
 router.get('/vendas', (req, res) => {
     connection.query(
-        'SELECT SUM(itens_vendas.valor_total) as total_vendas_semana FROM `lojatemdetudo`.`vendas` inner join `lojatemdetudo`.`itens_vendas` on `itens_vendas`.`fk_venda` = `vendas`.`id` inner join `lojatemdetudo`.`produtos` on `produtos`.`id` = `itens_vendas`.`fk_produto` WHERE vendas.data >= curdate() - INTERVAL DAYOFWEEK(curdate())+6 DAY AND vendas.data < curdate() - INTERVAL DAYOFWEEK(curdate())-1 DAY;',
+        'SELECT SUM(itens_vendas.valor_total) as total_vendas_semana FROM `lojatemdetudo`.`vendas` inner join `lojatemdetudo`.`itens_vendas` on `itens_vendas`.`fk_venda` = `vendas`.`id` inner join `lojatemdetudo`.`produtos` on `produtos`.`id` = `itens_vendas`.`fk_produto` WHERE vendas.data >= curdate() - INTERVAL DAYOFWEEK(curdate())+6 DAY AND vendas.data < curdate() - INTERVAL DAYOFWEEK(curdate())-1 DAY',
         
         (err, rows, fields) => {
             if(err) throw err;
