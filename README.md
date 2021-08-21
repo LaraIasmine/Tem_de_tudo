@@ -63,9 +63,11 @@ Retorna a somatória de todas as vendas da semana
 - Conteúdo:
 
   ```json
-  INSERIR
+  {"total_vendas_semana":NULL}
   ```
-
+  
+ NULL: Não houveram vendas na ultima semana
+ 
 ### **Resposta de erro**
 
 - Status:
@@ -103,9 +105,9 @@ Retorna o lucro semanal
 - Conteúdo:
 
   ```json
-  [
-   INSERIR
-  ]
+   {
+   "valor_total": 
+   }
   ```
 
 ### **Resposta de erro**
@@ -147,7 +149,7 @@ Nenhum
   ```json
   [
     {
-      INSERIR
+      "top_vendedor":
     }
   ]
   ```
@@ -190,11 +192,9 @@ Nenhum
 - Conteúdo:
 
   ```json
-  [
     {
-      INSERIR
+      "top_cliente":
     }
-  ]
   ```
 
 ### **Resposta de erro**
@@ -241,11 +241,9 @@ INSERIR
 - Conteúdo:
 
   ```json
-  [
     {
-      INSERIR
+     " Venda cadastrada com sucesso."
     }
-  ]
   ```
 
 ### **Resposta de erro**
@@ -274,7 +272,10 @@ Recebe um JSON com dados de um novo cliente e o insere no banco de dados
 
 ```json
 {
-INSERIR
+    "nome": "",
+    "endereco": "",
+    "compras": ,
+    "telefone": ""
 }
 ```
 
@@ -287,11 +288,9 @@ INSERIR
 - Conteúdo:
 
   ```json
-  [
     {
-      INSERIR
+      "Cliente cadastrado com sucesso."
     }
-  ]
   ```
 
 ### **Resposta de erro**
@@ -321,7 +320,7 @@ Recebe um JSON com dados de um novo vendedor e o insere no banco de dados
 
 ```json
 {
-INSERIR
+    "nome": ""
 }
 ```
 
@@ -334,11 +333,9 @@ INSERIR
 - Conteúdo:
 
   ```json
-  [
     {
-      INSERIR
+      "Vendedor cadastrado com sucesso"
     }
-  ]
   ```
 
 ### **Resposta de erro**
@@ -367,7 +364,15 @@ Recebe um JSON com dados de um novo produto e o insere no banco de dados
 
 ```json
 {
-INSERIR
+    "nome":"",
+    "descricao": "",
+    "marca": "",
+    "fornecedor": "",
+    "classificacao": "",
+    "preco_custo": ,
+    "preco_venda": ,
+    "qntd_estoque": ,
+    "qntd_loja": 
 }
 ```
 
@@ -382,7 +387,7 @@ INSERIR
   ```json
   [
     {
-      INSERIR
+      "Produto cadastrado com sucesso."
     }
   ]
   ```
@@ -420,7 +425,10 @@ Recebe um JSON com dados de um cliente, com ID especificado na URL e atualiza se
 
 ```json
 {
-  INSERIR
+  "nome": "",
+    "endereco": "",
+    "compras": ,
+    "telefone": ""
 }
 ```
 
@@ -433,9 +441,9 @@ Recebe um JSON com dados de um cliente, com ID especificado na URL e atualiza se
 - Conteúdo:
 
   ```json
-  [
-    INSERIR
-  ]
+    {
+        "Cliente atualizado com sucesso."
+    }
   ```
 
 ### **Resposta de erro**
@@ -480,12 +488,34 @@ Nenhum
 
   ![Status da requisicao](https://img.shields.io/badge/-200%20OK-brightgreen)
 
+### **Parâmetro de requisição no BODY**
+
+```json
+{
+  ""nome":"",
+    "descricao": "",
+    "marca": "",
+    "fornecedor": "",
+    "classificacao": "",
+    "preco_custo": ,
+    "preco_venda": ,
+    "qntd_estoque": ,
+    "qntd_loja": 
+}
+```
+
+### **Resposta de sucesso**
+
+- Status:
+
+  ![Status da requisicao](https://img.shields.io/badge/-200%20OK-brightgreen)
+
 - Conteúdo:
 
   ```json
-  [
-    INSERIR
-  ]
+    {
+        "Cliente atualizado com sucesso."
+    }
   ```
 
 ### **Resposta de erro**
