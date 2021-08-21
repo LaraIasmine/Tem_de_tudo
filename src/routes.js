@@ -23,17 +23,21 @@ router.get('/teste', (req, res) => {
     res.send({ message: 'Connected!'})
 })
 
-//Vendas semanais (somatoria de todas as vendas da semana)  DONE 
+//Vendas semanais (somatoria de todas as vendas da semana)- não há alteração de dados
 router.get('/vendas', (req, res) => {
     connection.query(
-        'SELECT SUM(itens_vendas.valor_total) FROM `lojatemdetudo`.vendas inner join `lojatemdetudo`.itens_vendas on itens_vendas.fk_venda = vendas.id inner join `lojatemdetudo`.produtos on produtos.id = itens_vendas.fk_produto WHERE vendas.data >= curdate() - INTERVAL DAYOFWEEK(curdate())+6 DAY AND vendas.data < curdate() - INTERVAL DAYOFWEEK(curdate())-1 DAY',
+        'SELECT SUM(itens_vendas.valor_total) as total_vendas_semana FROM `lojatemdetudo`.`vendas` inner join `lojatemdetudo`.`itens_vendas` on `itens_vendas`.`fk_venda` = `vendas`.`id` inner join `lojatemdetudo`.`produtos` on `produtos`.`id` = `itens_vendas`.`fk_produto` WHERE vendas.data >= curdate() - INTERVAL DAYOFWEEK(curdate())+6 DAY AND vendas.data < curdate() - INTERVAL DAYOFWEEK(curdate())-1 DAY;',
+        
         (err, rows, fields) => {
             if(err) throw err;
-            res.status(200).json(rows)
+            if (rows.length <= 0) {
+                return res.status(404).json({ err: 'Não há vendas cadastradas na última semana.' });
+            }
+            return res.status(200).json(rows);
         }
     )
 })
-//Lucro semanal (soma das vendas - soma do custo dos produtos vendidos)
+//Lucro semanal (soma das vendas - soma do custo dos produtos vendidos)- não há alteração de dados
 router.get('/lucro', (req, res) => {
     connection.query(
         'SELECT SUM(itens_vendas.valor_total) as valor_total, SUM(produtos.preco_custo) as valor_custo, SUM(itens_vendas.valor_total)- SUM(produtos.preco_custo) as lucro FROM `lojatemdetudo`.vendas inner join `lojatemdetudo`.itens_vendas on itens_vendas.fk_venda = vendas.id inner join `lojatemdetudo`.produtos on produtos.id = itens_vendas.fk_produto WHERE vendas.data >= curdate() - INTERVAL DAYOFWEEK(curdate())+6 DAY AND vendas.data < curdate() - INTERVAL DAYOFWEEK(curdate())-1 DAY',
@@ -43,7 +47,7 @@ router.get('/lucro', (req, res) => {
         }
     )
 })
-//Melhores vendedores (é o vendedor que vendeu maior valor)
+//Melhores vendedores (é o vendedor que vendeu maior valor) - não há alteração de dados
 router.get('/topVendedor', (req, res) => {
     connection.query(
         '',
@@ -53,7 +57,7 @@ router.get('/topVendedor', (req, res) => {
         }
     )
 })
-//Melhores clientes (é o cliente que comprou o maior valor)
+//Melhores clientes (é o cliente que comprou o maior valor) - não há alteração de dados
 router.get('/topCliente', (req, res) => {
     connection.query(
         '',
@@ -77,29 +81,29 @@ router.get('/venda/:idVenda', (req, res) => {
     )
 })
 //inserir venda 
-router.post('/vendas', (req, res) => {
-    const venda = req.body
-    const values = [
-        venda.numero,
-        venda.id_cliente,
-        venda.data,
-    ]
+// router.post('/vendas', (req, res) => {
+//     const venda = req.body
+//     const values = [
+//         venda.numero,
+//         venda.id_cliente,
+//         venda.data,
+//     ]
 
-    const {numero, id_cliente, data, fk_produto, quantidade, valor_unitario, valor_total} = venda
-    const qry =
-        'INSERIR',
-    if(!numero || !id_cliente || !data || !fk_produto|| !quantidade) {
-        return res.status(400).json({err: 'Preencimento incorreto, cheque os campos.'})
+//     const {numero, id_cliente, data, fk_produto, quantidade, valor_unitario, valor_total} = venda
+//     const qry =
+//         'INSERIR',
+//     if (!numero || !id_cliente || !data || !fk_produto|| !quantidade) {
+//         return res.status(400).json({err: 'Preencimento incorreto, cheque os campos.'})
 
-    } else if (valor_unitario  === 0 || !valor_unitario || valor_total === 0 || !valor_total) {
-        return res.status(400).json({err: 'Nenhum valor pode ser igual a 0 ou nulo.'})
-    } else {
-        connection.query(qry, values, (err, rows, fields) => {
-            if (err) throw err
-            return res.status(201).json({ message: 'Venda cadastrada com sucesso'})
-        })
-    }
-})
+//     } else if (valor_unitario  === 0 || !valor_unitario || valor_total === 0 || !valor_total) {
+//         return res.status(400).json({err: 'Nenhum valor pode ser igual a 0 ou nulo.'})
+//     } else {
+//         connection.query(qry, values, (err, rows, fields) => {
+//             if (err) throw err
+//             return res.status(201).json({ message: 'Venda cadastrada com sucesso'})
+//         })
+//     }
+// })
 //inserir cliente 6  COMO INSERIR JSON PARA BD RELACIONAL
 router.post('/clientes', (req, res) => {
     const cliente = req.body
