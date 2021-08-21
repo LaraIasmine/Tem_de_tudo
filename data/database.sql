@@ -1,4 +1,8 @@
+CREATE DATABASE  IF NOT EXISTS `lojatemdetudo`;
+USE `lojatemdetudo`;
+
 --- Criando tabela de produtos ---
+DROP TABLE IF EXISTS `produtos`;
 CREATE TABLE `lojatemdetudo`.`produtos` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(45) NOT NULL,
@@ -13,16 +17,17 @@ CREATE TABLE `lojatemdetudo`.`produtos` (
   PRIMARY KEY (`id`));
 
   --- Criando tabela de clientes ---
-
+DROP TABLE IF EXISTS `clientes`;
   CREATE TABLE `lojatemdetudo`.`clientes` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(45) NOT NULL,
-  `fk_endereco` INT NOT NULL,
+  `endereco` VARCHAR(150) NOT NULL,
   `compras` INT NOT NULL,
   `telefone` VARCHAR(14) NOT NULL,
   PRIMARY KEY (`id`));
 
 --- Criação da tabela de vendas ---
+DROP TABLE IF EXISTS `vendas`;
 CREATE TABLE `lojatemdetudo`.`vendas` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `id_cliente` INT NOT NULL,
@@ -31,28 +36,22 @@ CREATE TABLE `lojatemdetudo`.`vendas` (
   PRIMARY KEY (`id`));
 
   --- Criação tabela de Itens da venda ---
+  DROP TABLE IF EXISTS `itens_vendas`;
   CREATE TABLE `lojatemdetudo`.`itens_vendas` (
-  `fk_venda` INT NOT NULL AUTO_INCREMENT,
+  `fk_venda` INT NOT NULL,
   `fk_produto` INT NOT NULL,
   `quantidade` INT NOT NULL,
   `valor_unitario` FLOAT NOT NULL,
-  `valor_total` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`fk_venda`));
+  `valor_total` VARCHAR(45) NOT NULL
+  );
 
   -- Criação da tabela de Vendedores ---
+  DROP TABLE IF EXISTS `vendedores`;
   CREATE TABLE `lojatemdetudo`.`vendedores` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`));
 
-  --- Criação da tabela de Endereços ---
-
-  CREATE TABLE `lojatemdetudo`.`enderecos` (
-  `id` INT NOT NULL,
-  `logradouro` VARCHAR(60) NOT NULL,
-  `numero` VARCHAR(15) NOT NULL,
-  `bairro` VARCHAR(25) NOT NULL,
-  PRIMARY KEY (`id`));
 
 
 --- Foreign Keys ---
@@ -83,13 +82,3 @@ ADD CONSTRAINT `fk_produtos`
   ON DELETE NO ACTION
   ON UPDATE NO ACTION;
 
- --- endereços ---
-  ALTER TABLE `lojatemdetudo`.`clientes` 
-ADD INDEX `fk_endereco_idx` (`fk_endereco` ASC) VISIBLE;
-;
-ALTER TABLE `lojatemdetudo`.`clientes` 
-ADD CONSTRAINT `fk_endereco`
-  FOREIGN KEY (`fk_endereco`)
-  REFERENCES `lojatemdetudo`.`enderecos` (`id`)
-  ON DELETE NO ACTION
-  ON UPDATE NO ACTION;
