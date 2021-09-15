@@ -23,7 +23,7 @@ router.get('/teste', (req, res) => {
     res.send({ message: 'Connected!'})
 })
 
-//Vendas semanais (somatoria de todas as vendas da semana)- não há alteração de dados
+
 router.get('/vendas', (req, res) => {
     connection.query(
         'SELECT SUM(itens_vendas.valor_total) as total_vendas_semana FROM `lojatemdetudo`.`vendas` inner join `lojatemdetudo`.`itens_vendas` on `itens_vendas`.`fk_venda` = `vendas`.`id` inner join `lojatemdetudo`.`produtos` on `produtos`.`id` = `itens_vendas`.`fk_produto` WHERE vendas.data >= curdate() - INTERVAL DAYOFWEEK(curdate())+6 DAY AND vendas.data < curdate() - INTERVAL DAYOFWEEK(curdate())-1 DAY',
@@ -37,7 +37,7 @@ router.get('/vendas', (req, res) => {
         }
     )
 })
-//Lucro semanal (soma das vendas - soma do custo dos produtos vendidos)- não há alteração de dados
+
 router.get('/lucro', (req, res) => {
     connection.query(
         'SELECT SUM(itens_vendas.valor_total) as valor_total, SUM(produtos.preco_custo) as valor_custo, SUM(itens_vendas.valor_total)- SUM(produtos.preco_custo) as lucro FROM `lojatemdetudo`.vendas inner join `lojatemdetudo`.itens_vendas on itens_vendas.fk_venda = vendas.id inner join `lojatemdetudo`.produtos on produtos.id = itens_vendas.fk_produto WHERE vendas.data >= curdate() - INTERVAL DAYOFWEEK(curdate())+6 DAY AND vendas.data < curdate() - INTERVAL DAYOFWEEK(curdate())-1 DAY',
@@ -47,7 +47,7 @@ router.get('/lucro', (req, res) => {
         }
     )
 })
-//Melhores vendedores (é o vendedor que vendeu maior valor) - não há alteração de dados
+
 router.get('/topVendedor', (req, res) => {
     connection.query(
         'SELECT vendedores.nome, COUNT(*) as total_vendas FROM `lojatemdetudo`.vendas inner join `lojatemdetudo`.vendedores on vendedores.id = vendas.fk_vendedor GROUP BY vendedores.id ORDER BY total_vendas DESC LIMIT 1',
@@ -57,7 +57,7 @@ router.get('/topVendedor', (req, res) => {
         }
     )
 })
-//Melhores clientes (é o cliente que comprou o maior valor) - não há alteração de dados
+
 router.get('/topCliente', (req, res) => {
     connection.query(
         'SELECT clientes.nome, MAX(clientes.compras) as total_compras FROM `lojatemdetudo`.clientes GROUP BY clientes.id ORDER BY total_compras DESC LIMIT 1',
@@ -80,7 +80,7 @@ router.get('/venda/:idVenda', (req, res) => {
         }
     )
 })
-//inserir venda 
+ 
 router.post('/vendas', (req, res) => {
     const venda = req.body
     const values = [
@@ -131,8 +131,6 @@ router.put('/atualizarCliente/:idCliente', (req, res) => {
 
 })
 
-
-//inserir produtos da venda
 router.post('/itens_venda', (req, res) => {
     const itens_venda = req.body
     const values = [
@@ -158,7 +156,7 @@ router.post('/itens_venda', (req, res) => {
         })
     }
 })
-//inserir cliente 
+
 router.post('/clientes', (req, res) => {
     const cliente = req.body
     const values = [
@@ -184,7 +182,7 @@ router.post('/clientes', (req, res) => {
         });
     }
 })
-//inserir vendedor 7 
+
 router.post('/vendedores', (req, res) => {
     const vendedor = req.body
     const values = [
@@ -207,7 +205,7 @@ router.post('/vendedores', (req, res) => {
         });
     }
 })
-//inserir produto 8 
+ 
 router.post('/produtos', (req, res) => {
     const produto = req.body
     const values = [
@@ -240,7 +238,7 @@ router.post('/produtos', (req, res) => {
         });
     }
 })
-//atualizar cliente 9
+
 router.put('/clientes/:idCliente', (req, res) => {
     const cliente = req.body
     const values = [
@@ -275,7 +273,7 @@ router.put('/clientes/:idCliente', (req, res) => {
         }
     )
 })
-//atualizar produto 10
+
 router.put('/produtos/:idProduto', (req, res) => {
     const produto = req.body
     const values = [
