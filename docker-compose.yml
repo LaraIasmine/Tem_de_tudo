@@ -22,7 +22,5 @@ services:
     volumes:
       - ./init/01.sql:/docker-entrypoint-initdb.d/01.sql
     
-volumes: 
-  container-volumes:
 
     

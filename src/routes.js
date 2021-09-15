@@ -60,7 +60,7 @@ router.get('/topVendedor', (req, res) => {
 //Melhores clientes (é o cliente que comprou o maior valor) - não há alteração de dados
 router.get('/topCliente', (req, res) => {
     connection.query(
-        '',
+        'SELECT clientes.nome, MAX(clientes.compras) as total_compras FROM `lojatemdetudo`.clientes GROUP BY clientes.id ORDER BY total_compras DESC LIMIT 1',
         (err, rows, fields) => {
             if(err) throw err;
             res.status(200).json(rows)
@@ -81,30 +81,84 @@ router.get('/venda/:idVenda', (req, res) => {
     )
 })
 //inserir venda 
-// router.post('/vendas', (req, res) => {
-//     const venda = req.body
-//     const values = [
-//         venda.numero,
-//         venda.id_cliente,
-//         venda.data,
-//     ]
+router.post('/vendas', (req, res) => {
+    const venda = req.body
+    const values = [
+        venda.numero,
+        venda.id_cliente,
+        venda.data,
+        venda.fk_vendedor,
+    ]
 
-//     const {numero, id_cliente, data, fk_produto, quantidade, valor_unitario, valor_total} = venda
-//     const qry =
-//         'INSERIR',
-//     if (!numero || !id_cliente || !data || !fk_produto|| !quantidade) {
-//         return res.status(400).json({err: 'Preencimento incorreto, cheque os campos.'})
+    const {numero, id_cliente, data, fk_vendedor} = venda
+    const qry =
+        'INSERT INTO `lojatemdetudo`.`vendas` (`id_cliente`, `data`, `fk_vendedor`) values (?,?,?,?)';
+    if (!numero || !id_cliente || !data || !fk_vendedor) {
+        return res.status(400).json({err: 'Preencimento incorreto, cheque os campos.'})
 
-//     } else if (valor_unitario  === 0 || !valor_unitario || valor_total === 0 || !valor_total) {
-//         return res.status(400).json({err: 'Nenhum valor pode ser igual a 0 ou nulo.'})
-//     } else {
-//         connection.query(qry, values, (err, rows, fields) => {
-//             if (err) throw err
-//             return res.status(201).json({ message: 'Venda cadastrada com sucesso'})
-//         })
-//     }
-// })
-//inserir cliente 6  COMO INSERIR JSON PARA BD RELACIONAL
+    } else {
+        connection.query(qry, values, (err, rows, fields) => {
+            if (err) throw err
+            return res.status(201).json({ message: 'Venda cadastrada com sucesso'})
+        })
+    }
+})
+router.put('/atualizarCliente/:idCliente', (req, res) => {
+    const values = [
+        req.params.idCliente
+    ]
+
+    const qry = 
+    ' UPDATE `lojatemdetudo`.`clientes` SET compras = compras + 1  WHERE id = ?';
+
+    connection.query (
+        'SELECT * FROM  `lojatemdetudo`.`clientes` WHERE id = ?',
+        [req.params.idCliente],
+        (err, rows, fields) => {
+            if ( rows.length <= 0) {
+                if (err) throw err
+                return res.status(404).json({ message: 'Cliente não encontrado.' })
+            } else {
+                connection.query(qry, values, (err, rows, fields) => {
+                    if (err) throw err;
+                    return res
+                      .status(200)
+                      .json({ message: 'Compras do cliente atualizadas com sucesso.' });
+                });
+            }
+        }
+    )
+
+})
+
+
+//inserir produtos da venda
+router.post('/itens_venda', (req, res) => {
+    const itens_venda = req.body
+    const values = [
+        itens_venda.fk_venda,
+        itens_venda.fk_produto,
+        itens_venda.quantidade,
+        itens_venda.valor_unitario,
+        itens_venda.valor_total,
+    ]
+
+    const {fk_venda, fk_produto, quantidade, valor_unitario, valor_total} = itens_venda
+    const qry =
+        'INSERT INTO `lojatemdetudo`.`itens_vendas` (`fk_venda`, `fk_produto`, `quantidade`, `valor_unitario`, `valor_total` VALUES (?, ?, ?, ?, ?)';
+
+    if (!fk_venda || !fk_produto || !quantidade || !valor_unitario || !valor_total ) {
+        return res.status(400).json({err: 'Preencimento incorreto, cheque os campos.'})
+    } else if (itens_venda.valor_unitario === 0 || itens_venda.valor_total === 0 || !itens_venda.valor_unitario || !itens_venda.valor_total) {
+            return res.status(400).json({ err: 'Os valores totais e unitários não podem ser nulos ou R$ 0.' })
+    } else {
+        connection.query(qry, values, (err, rows, fields) => {
+            if (err) throw err
+            return res.status(201).json({ message: 'Venda cadastrada com sucesso'})
+        })
+    }
+})
+//inserir cliente 
 router.post('/clientes', (req, res) => {
     const cliente = req.body
     const values = [
