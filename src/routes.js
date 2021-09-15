@@ -131,7 +131,7 @@ router.put('/atualizarCliente/:idCliente', (req, res) => {
 
 })
 
-router.post('/itens_venda', (req, res) => {
+router.post('/itensVenda', (req, res) => {
     const itens_venda = req.body
     const values = [
         itens_venda.fk_venda,
@@ -152,7 +152,7 @@ router.post('/itens_venda', (req, res) => {
     } else {
         connection.query(qry, values, (err, rows, fields) => {
             if (err) throw err
-            return res.status(201).json({ message: 'Venda cadastrada com sucesso'})
+            return res.status(201).json({ message: 'Itens cadastrados com sucesso'})
         })
     }
 })
