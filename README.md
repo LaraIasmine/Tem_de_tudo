@@ -228,7 +228,10 @@ Recebe um JSON com dados de uma venda e a insere no banco de dados
 
 ```json
 {
-INSERIR
+    "numero": ,
+    "id_cliente": ,
+    "data": "",
+    "fk_vendedor": ""
 }
 ```
 
@@ -250,17 +253,118 @@ INSERIR
 
 - Status:
 
+  ![Status da requisicao](https://img.shields.io/badge/-400%20BAD%20REQUEST-red)
+
+- Conteúdo:
+
+  ```json
+  {
+    "error": "Preenchimento incorreto, cheque os campos"
+  }
+  ```
+---
+### **Método 6: PUT**
+
+Tem ID especificado na URL e atualiza o campo de "compras" na base de dados
+
+### **URL**
+
+`/atualizarCliente/{id}`
+
+### **Parâmetro de requisição na URL**
+
+`id=[INTEGER]`
+
+
+### **Resposta de sucesso**
+
+- Status:
+
+  ![Status da requisicao](https://img.shields.io/badge/-200%20OK-brightgreen)
+
+- Conteúdo:
+
+  ```json
+    {
+        "Compras do cliente atualizadas com sucesso."
+    }
+  ```
+
+### **Resposta de erro**
+
+- Status:
+
   ![Status da requisicao](https://img.shields.io/badge/-404%20NOT%20FOUND-red)
 
 - Conteúdo:
 
   ```json
   {
-    "error": "Não foi possível cadastrar venda"
+    "error": "Cliente não encontrado.."
+  }
+  ```
+
+---
+### **Método 7: POST**
+
+Recebe um JSON com dados dos itens de uma venda e a insere no banco de dados
+
+### **URL**
+
+`/itensVenda`
+
+### **Parâmetro de requisição no BODY**
+
+```json
+{
+    "fk_venda": ,
+    "fk_produto": ,
+    "quantidade": ,
+    "valor_unitario": ,
+    "valor_total": 
+}
+```
+
+### **Resposta de sucesso**
+
+- Status:
+
+  ![Status da requisicao](https://img.shields.io/badge/-200%20OK-brightgreen)
+
+- Conteúdo:
+
+  ```json
+    {
+     "Itens cadastrados com sucesso."
+    }
+  ```
+
+### **Resposta de erro**
+
+- Status:
+
+  ![Status da requisicao](https://img.shields.io/badge/-400%20BAD%20REQUEST-red)
+
+- Conteúdo:
+
+  ```json
+  {
+    "error": "Preenchimento incorreto, cheque os campos"
+  }
+  ```
+ - Status:
+
+  ![Status da requisicao](https://img.shields.io/badge/-400%20BAD%20REQUEST-red)
+
+- Conteúdo:
+
+  ```json
+  {
+    "error": "Os valores totais e unitários não podem ser iguais nulos ou R$0."
   }
   ```
 ---
-### **Método 6: POST**
+### **Método 8: POST**
 
 Recebe um JSON com dados de um novo cliente e o insere no banco de dados
 
@@ -308,7 +412,7 @@ Recebe um JSON com dados de um novo cliente e o insere no banco de dados
   ```
 ---
 
- ### **Método 7: POST**
+ ### **Método 9: POST**
 
 Recebe um JSON com dados de um novo vendedor e o insere no banco de dados
 
@@ -352,7 +456,7 @@ Recebe um JSON com dados de um novo vendedor e o insere no banco de dados
   }
   ```
 ---
- ### **Método 8: POST**
+ ### **Método 10: POST**
 
 Recebe um JSON com dados de um novo produto e o insere no banco de dados
 
@@ -409,7 +513,7 @@ Recebe um JSON com dados de um novo produto e o insere no banco de dados
 
 
 
-### **Método 9: PUT**
+### **Método 11: PUT**
 
 Recebe um JSON com dados de um cliente, com ID especificado na URL e atualiza seus dados na base de dados
 
@@ -462,7 +566,7 @@ Recebe um JSON com dados de um cliente, com ID especificado na URL e atualiza se
 
 ---
 
-### **Método 10: PUT**
+### **Método 12: PUT**
 
 Recebe um JSON com dados de um produto, com ID especificado na URL e atualiza seus dados na base de dados
 
